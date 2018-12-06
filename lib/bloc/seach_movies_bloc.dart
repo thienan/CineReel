@@ -5,12 +5,12 @@ import 'package:cine_reel/bloc/bloc_provider.dart';
 import 'package:cine_reel/ui/search_screen/search_state.dart';
 import 'package:rxdart/rxdart.dart';
 
-class SearchBloc extends BlocBase {
+class SearchMoviesBloc extends BlocBase {
   final Sink<String> onTextChanged;
   final Stream<SearchState> state;
-  TMDBApi api;
+  static TMDBApi tmdbApi;
 
-  factory SearchBloc(TMDBApi api) {
+  factory SearchMoviesBloc(TMDBApi api) {
     final onTextChanged = PublishSubject<String>();
     final state = onTextChanged
         // If the text has not changed, do not perform a new search
@@ -21,37 +21,36 @@ class SearchBloc extends BlocBase {
         // State. If another search term is entered, flatMapLatest will ensure
         // the previous search is discarded so we don't deliver stale results
         // to the View.
-        .switchMap<SearchState>((String movieTitle) => _search(movieTitle, api))
+        .switchMap<SearchState>((String query) => _search(query, api))
         // The initial state to deliver to the screen.
         .startWith(SearchNoTerm());
 
-    return SearchBloc._(onTextChanged, state);
+    return SearchMoviesBloc._(onTextChanged, state);
   }
 
-  SearchBloc._(this.onTextChanged, this.state);
+  SearchMoviesBloc._(this.onTextChanged, this.state);
 
-  void dispose() {
-    print('disposing searchBloc');
-    onTextChanged.close();
-  }
-
-  static Stream<SearchState> _search(String movieTitle, TMDBApi api) async* {
-    if (movieTitle.isEmpty) {
+  static Stream<SearchState> _search(String query, TMDBApi api) async* {
+    if (query.isEmpty) {
       yield SearchNoTerm();
     } else {
       yield SearchLoading();
-
       try {
-        final result = await api.searchMovie(title: movieTitle);
+        final result = await api.searchMovie(title: query);
 
         if (result.isEmpty) {
           yield SearchEmpty();
         } else {
-          yield SearchPopulated(result.results);
+          yield SearchPopulated(movies: result.results);
         }
       } catch (e) {
         yield SearchError();
       }
     }
+  }
+
+  @override
+  void dispose() {
+    onTextChanged.close();
   }
 }

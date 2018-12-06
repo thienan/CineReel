@@ -14,15 +14,18 @@ class MovieDetailsRatingsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        buildIMDBRating(),
-        buildRottenTomatoesRating(),
-        buildMetacriticRating(),
-        buildTMDBRating(),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          buildIMDBRating(),
+          buildRottenTomatoesRating(),
+          buildMetacriticRating(),
+          buildTMDBRating(),
+        ],
+      ),
     );
   }
 
@@ -94,7 +97,6 @@ class MovieDetailsRatingsWidget extends StatelessWidget {
     print("original title: ${movieDetails.getTitle}");
     String cleanTitle = sanitiseTitleAndJoin("-");
     var url = "$METACRITIC_MOVIE_PAGE_BASE_URL/$cleanTitle";
-    print(url);
     return launchURL(url);
   }
 }

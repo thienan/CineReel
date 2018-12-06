@@ -39,7 +39,8 @@ class _BlocProviderState<T> extends State<BlocProvider<BlocBase>>{
 	void dispose() {
 //  	disposing the blocs here, means that when switching tabs and the bloc is destroyed,
 //		when coming back to that tab, the stream controller is closed and pagination doesn't work
-//		widget.bloc.dispose();
+		print('disposing ${widget.bloc}');
+		widget.bloc.dispose();
 		super.dispose();
 	}
 }

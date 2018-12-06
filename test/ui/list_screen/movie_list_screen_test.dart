@@ -15,7 +15,8 @@ import '../../fixtures/common_mocks.dart';
 import '../../test_utils.dart';
 
 class MockMovieBloc extends Mock implements MovieBloc {
-  MockMovieBloc(MockTMDBApi mockTMDBApi);
+  TabKey tabKey;
+  MockMovieBloc(MockTMDBApi mockTMDBApi, TabKey this.tabKey);
 }
 
 void main() {
@@ -56,6 +57,6 @@ void main() {
 
 Future pumpMainWidget(WidgetTester tester) async {
   await tester.pumpWidget(BlocProvider<MovieBloc>(
-      child: MaterialApp(home: MoviesListScreen(tabKey: TabKey.kNowPlaying)),
-      bloc: MockMovieBloc(MockTMDBApi())));
+      child: MaterialApp(home: MoviesListScreen()),
+      bloc: MockMovieBloc(MockTMDBApi(), TabKey.kNowPlaying)));
 }

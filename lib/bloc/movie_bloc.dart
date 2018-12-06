@@ -41,7 +41,6 @@ class MovieBloc extends BlocBase {
 
   @override
   void dispose() {
-    print('dispose $tabKey');
     _streamController.close();
   }
 
@@ -113,6 +112,8 @@ class MovieBloc extends BlocBase {
       case TabKey.kGenres:
         apiCall = api.moviesForGenre(genre: genre, page: page);
         break;
+			default:
+				//
     }
     return apiCall;
   }
