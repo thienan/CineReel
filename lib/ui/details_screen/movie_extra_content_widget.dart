@@ -1,17 +1,25 @@
 import 'package:cine_reel/bloc/movie_details_bloc.dart';
 import 'package:cine_reel/models/tmdb_movie_details.dart';
-import 'package:cine_reel/ui/common_widgets/common_widgets.dart';
 import 'package:cine_reel/ui/common_widgets/errors_widget.dart';
 import 'package:cine_reel/ui/common_widgets/loading_widget.dart';
 import 'package:cine_reel/ui/details_screen/cast_thumbnail_widget.dart';
+import 'package:cine_reel/ui/details_screen/movie_details_images_widget.dart';
 import 'package:cine_reel/ui/details_screen/movie_details_ratings_widget.dart';
+import 'package:cine_reel/utils/styles.dart';
 import 'package:flutter/widgets.dart';
 
-class MovieExtraContent extends StatelessWidget {
+
+Container buildSubtitleForDetailsPage(String title) {
+	return Container(
+			margin: const EdgeInsets.only(left: 8.0, bottom: 18.0),
+			child: Align(alignment: Alignment.topLeft, child: Text(title, style: STYLE_SUBTITLE)));
+}
+
+class MovieExtraContentWidget extends StatelessWidget {
   final TMDBMovieDetails movieDetails;
   final MovieDetailsBloc movieDetailsBloc;
 
-  MovieExtraContent({this.movieDetails, this.movieDetailsBloc});
+  MovieExtraContentWidget({this.movieDetails, this.movieDetailsBloc});
 
   //this approach of adding things to the builder only when they become available
   //helps us avoid the need to deal with null values in the children
@@ -28,17 +36,17 @@ class MovieExtraContent extends StatelessWidget {
     }
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: widgetList,
     );
   }
 
   List<Widget> extraChildren() {
-    return <Widget>[
+    return [
       MovieDetailsRatingsWidget(movieDetails: movieDetails, movieDetailsBloc: movieDetailsBloc),
-      buildHorizontalDivider(),
       CastThumbnailWidget(movieDetails: movieDetails),
+      MovieDetailsImagesWidget(movieDetails: movieDetails),
     ];
   }
 
@@ -49,3 +57,5 @@ class MovieExtraContent extends StatelessWidget {
     );
   }
 }
+
+
